@@ -1,0 +1,42 @@
+---
+title: "Phyllotaxis"
+runtime: shiny
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width=4, fig.height=4) 
+library(colourpicker)
+library(ggplot2)
+```
+
+```{r eruptions, echo=FALSE}
+inputPanel(
+  textInput("bins", label = "enter a random number within 1 to 100" ,
+                value = "19"),
+  h1("Pick a color"),
+  color <- colourInput("col", NULL, "Turquoise")
+
+)
+
+renderPlot({
+  angle <- as.numeric(input$bins) * pi / 180
+    points <- 2000
+    
+    t <- (1:points)*angle
+    x <- sin(t)
+    y <- cos(t)
+    
+    df <- data.frame(t, x, y)
+    
+    p <- ggplot(df, aes(x*t, y*t))
+    p + geom_point(size = 80, alpha = 0.1, shape=1, color = input$col) +
+      theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+            title =  element_blank(), axis.ticks =  element_blank(),
+            axis.text =  element_blank(), panel.grid =element_blank(),
+            legend.position = "none")
+})
+```
+
+
+
