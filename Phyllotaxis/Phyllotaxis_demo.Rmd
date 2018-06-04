@@ -1,0 +1,263 @@
+---
+title: "Phyllotaxis"
+output: html_document
+fig_width: 4 
+fig_height: 4
+---
+```{r}
+knitr::opts_chunk$set(fig.width=4, fig.height=4) 
+```
+
+[online tutorial][0] to take it step by step in R
+
+# Loading ggplot2 
+```{r}
+# adjusting plot sizing
+options(repr.plot.width = 5, repr.plot.height = 5)
+library(ggplot2)
+```
+
+[more to know about fractal shapes][1]
+[some freactal shapes][2]  
+
+***
+
+# Drawing circles
+```{r}
+# use 50 points to draw a circle of radius 1
+
+t <- seq(0, 2*pi, length.out = 50) # 50 data points from 0 up to 2*pi (angles)
+x <- sin(t)
+y <- cos(t)
+df <- data.frame(t, x, y) # data set of angles, sin and cos
+
+# Make a scatter plot of points in a circle
+p <- ggplot(df, aes(x, y))
+
+```
+
+## circle scatter plot
+Here we take the points in df mapped using aes(x,y) & draw geometry using the geom_ functions  
+
+* we use geom_point() here to draw just 50 points on the circumference  
+* full circle can be obtained using geom_path()
+```{r}
+p + geom_point()
+```
+
+## Spirals, Golden angle, and harmonious shapes  
+
+### simple spiral shape
+To create a flower shpae we need to create a [spiral][4]
+A spiral is a curve which starts from the origin and moves away from this point as it revolves around it
+That's easily obtained by multiplying the x & y values in a factor. 
+This factor can be t itself like:
+```{r}
+x1 <- t * x
+y1 <- t * y
+df1 <- data.frame(t, x1, y1)
+p1 <- ggplot(df1, aes(x1, y1))
+p1 + geom_point()
+```
+
+### More harmonuos spiral shape
+for a more harmonuos spiral shape we use the [Golden Angle][5] concept which is also related to the Golden Ratio 
+
+Golden Angle = π(3 − √5)
+```{r}
+# Defining the number of points
+points <- 500
+
+# Defining the Golden Angle
+angle <- pi * (3 - sqrt(5))
+
+# remake the scatter plot again
+# t <- seq(1*angle, 500*angle, length.out = 500) # t <- (1:points) * angle
+t <- (1:points) * angle
+x <- sin(t)
+y <-cos(t)
+df <- data.frame(t, x, y)
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point()
+```
+
+### remove the unwanted items in the graph
+we remove the grey background, the ticks and axes titles, the grid .. etc.
+```{r}
+df <- data.frame(t, x, y)
+
+# Make a scatter plot of points in a spiral
+p <- ggplot(df, aes(x*t, y*t))
+
+p + geom_point() + theme(panel.background = element_rect(fill = "white", colour = "white"), title =  element_blank(), axis.ticks =  element_blank(), axis.text =  element_blank(), panel.grid =element_blank() )
+
+```
+
+### play with apperance  
+
+here we make some changes to points size, color, and transparency (alpha)
+
+```{r}
+
+
+# Make a scatter plot of points in a spiral
+p <- ggplot(df, aes(x*t, y*t))
+
+p + geom_point(alpha = 0.5, size = 8, color = "darkgreen") + theme(panel.background = element_rect(fill = "white", colour = "white"), title =  element_blank(), axis.ticks =  element_blank(), axis.text =  element_blank(), panel.grid =element_blank())
+```
+
+### the dandelion
+
+```{r}
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(mapping = aes(size = t), alpha = 0.5, shape=8, color = "black") +
+theme(panel.background = element_rect(fill = "white", colour = "white"),
+      title =  element_blank(), axis.ticks =  element_blank(),
+      axis.text =  element_blank(), panel.grid =element_blank(),
+      legend.position = "none")
+```
+
+### sun flower
+
+```{r}
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(mapping = aes(size = t), alpha = 0.5, shape=17, color = "yellow") +
+theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+      title =  element_blank(), axis.ticks =  element_blank(),
+      axis.text =  element_blank(), panel.grid =element_blank(),
+      legend.position = "none")
+```
+
+### Changing the angle effect
+
+we change the golden angle, and we increase points number
+we set angle to 2 with 1000 points
+```{r}
+
+    angle <- 2
+    points <- 1000
+    
+    t <- (1:points)*angle
+    x <- sin(t)
+    y <- cos(t)
+    
+    df <- data.frame(t, x, y)
+  
+    p <- ggplot(df, aes(x*t, y*t))
+    p + geom_point(mapping = aes(size = t), alpha = 0.5, shape=17, color = "yellow") +
+    theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+          title =  element_blank(), axis.ticks =  element_blank(),
+          axis.text =  element_blank(), panel.grid =element_blank(),
+          legend.position = "none")
+    
+ggsave("2.png", width = 4, height = 4)
+```
+
+## Beautiful example
+
+```{r}
+angle <- 1.77
+points <- 2000
+
+t <- (1:points)*angle
+x <- sin(t)
+y <- cos(t)
+
+df <- data.frame(t, x, y)
+
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(mapping = aes(size = t), alpha = 0.1, shape=16, color = "pink") +
+theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+      title =  element_blank(), axis.ticks =  element_blank(),
+      axis.text =  element_blank(), panel.grid =element_blank(),
+      legend.position = "none")
+
+ggsave("3.png", width = 4, height = 4)
+```
+
+## another example
+
+```{r}
+angle <- 13 * pi / 180
+points <- 1300
+
+t <- (1:points)*angle
+x <- sin(t)
+y <- cos(t)
+
+df <- data.frame(t, x, y)
+
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(size = 80, alpha = 0.1, shape=1, color = "magenta4") +
+theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+      title =  element_blank(), axis.ticks =  element_blank(),
+      axis.text =  element_blank(), panel.grid =element_blank(),
+      legend.position = "none")
+ggsave("4.png", width = 3, height = 3)
+```
+
+```{r}
+angle <- 19 * pi / 180
+points <- 1500
+
+t <- (1:points)*angle
+x <- sin(t)
+y <- cos(t)
+
+df <- data.frame(t, x, y)
+
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(size = 80, alpha = 0.1, shape=1, color = "Turquoise") +
+theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+      title =  element_blank(), axis.ticks =  element_blank(),
+      axis.text =  element_blank(), panel.grid =element_blank(),
+      legend.position = "none")
+ggsave("1.png", width = 4, height = 4)
+```
+ 
+### playing with a function
+
+```{r}
+play_phyllotaxis <-function(factor, points = 2000, color){
+  angle <-  factor*pi / 180
+  points <- points
+
+  t <- (1:points)*angle
+  x <- sin(t)
+  y <- cos(t)
+  
+  df <- data.frame(t, x, y)
+  
+  p <- ggplot(df, aes(x*t, y*t))
+  p + geom_point(size = 80, alpha = 0.1, shape=1, color = color) +
+  theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+        title =  element_blank(), axis.ticks =  element_blank(),
+        axis.text =  element_blank(), panel.grid =element_blank(),
+        legend.position = "none")
+  
+}
+```
+
+```{r}
+
+play_phyllotaxis(15, 2000, "red")
+ggsave("5.png", width = 4, height = 4)
+```
+
+```{r}
+play_phyllotaxis(0.75, 2000, "green")
+ggsave("6.png", width = 4, height = 4)
+```
+
+```{r}
+play_phyllotaxis(72, 2000, "blue")
+ggsave("6.png", width = 4, height = 4)
+```
+
+
+
+[0]: https://projects.datacamp.com/projects/62
+[1]: https://en.wikipedia.org/wiki/Fractal
+[2]: https://wallhere.com/en/wallpaper/778140
+[4]: https://en.wikipedia.org/wiki/Spiral
+[5]: https://en.wikipedia.org/wiki/Golden_angle
