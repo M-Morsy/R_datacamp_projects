@@ -1,0 +1,92 @@
+---
+title: "Phyllotaxis"
+author: "mohamed morsy"
+date: "June 25, 2018"
+output: slidy_presentation
+
+---
+
+## Harmonuos spiral shape
+for a more harmonuos spiral shape we use the Golden Angle concept which is also related to the Golden Ratio 
+
+Golden Angle = π(3 − √5)
+```{r}
+options(repr.plot.width = 5, repr.plot.height = 5)
+library(ggplot2)
+# Defining the number of points
+points <- 500
+# Defining the Golden Angle
+angle <- pi * (3 - sqrt(5))
+
+# remake the scatter plot again
+# t <- seq(1*angle, 500*angle, length.out = 500) # t <- (1:points) * angle
+t <- (1:points) * angle
+x <- sin(t)
+y <-cos(t)
+df <- data.frame(t, x, y)
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point()
+```
+
+
+## sun flower
+
+```{r}
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(mapping = aes(size = t), alpha = 0.5, shape=17, color = "yellow") +
+theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+      title =  element_blank(), axis.ticks =  element_blank(),
+      axis.text =  element_blank(), panel.grid =element_blank(),
+      legend.position = "none")
+```
+
+## Changing the angle effect
+
+we change the golden angle, and we increase points number
+we set angle to 2 with 1000 points
+```{r}
+
+    angle <- 2
+    points <- 1000
+    
+    t <- (1:points)*angle
+    x <- sin(t)
+    y <- cos(t)
+    
+    df <- data.frame(t, x, y)
+  
+    p <- ggplot(df, aes(x*t, y*t))
+    p + geom_point(mapping = aes(size = t), alpha = 0.5, shape=17, color = "yellow") +
+    theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+          title =  element_blank(), axis.ticks =  element_blank(),
+          axis.text =  element_blank(), panel.grid =element_blank(),
+          legend.position = "none")
+    
+ggsave("2.png", width = 4, height = 4)
+```
+
+## Beautiful example
+
+```{r}
+angle <- 13 * pi / 180
+points <- 1300
+
+t <- (1:points)*angle
+x <- sin(t)
+y <- cos(t)
+
+df <- data.frame(t, x, y)
+
+p <- ggplot(df, aes(x*t, y*t))
+p + geom_point(size = 80, alpha = 0.1, shape=1, color = "magenta4") +
+theme(panel.background = element_rect(fill = "white", colour = "darkmagenta"),
+      title =  element_blank(), axis.ticks =  element_blank(),
+      axis.text =  element_blank(), panel.grid =element_blank(),
+      legend.position = "none")
+ggsave("4.png", width = 3, height = 3)
+```
+
+
+
+
+
